@@ -1,0 +1,50 @@
+@model Registration.Models.CourseViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="grid grid-cols-2 rounded-box shadow-lg">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title">Add Course</div>
+            <form asp-action="Create">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Name</span>
+                    </label>
+                    <input type="text" name="Name" placeholder="Name" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Department</span>
+                    </label>
+                    <select class="select select-bordered w-full max-w-xs">
+                        <option disabled="disabled" selected="selected">Select a department</option> 
+                        @foreach (var department in Model.Departments)
+                        {
+                                <option value="@department.Id">@department.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="divider"></div>
+                <div class="flex">
+                    <div class="flex-1">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+
+                    <div class="flex-none">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
