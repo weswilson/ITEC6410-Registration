@@ -19,45 +19,105 @@ namespace Registration.Migrations
 
             modelBuilder.Entity("Registration.Models.Course", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CourseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CourseNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProfessorId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProfessorStaffId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("CourseId");
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("ProfessorId");
+                    b.HasIndex("ProfessorStaffId");
 
                     b.ToTable("Course");
+
+                    b.HasData(
+                        new
+                        {
+                            CourseId = 1,
+                            CourseNumber = "1000",
+                            DepartmentId = 1,
+                            Description = "",
+                            Name = "Math Fundamentals"
+                        },
+                        new
+                        {
+                            CourseId = 2,
+                            CourseNumber = "1000",
+                            DepartmentId = 2,
+                            Description = "",
+                            Name = "Introduction to English"
+                        },
+                        new
+                        {
+                            CourseId = 3,
+                            CourseNumber = "1000",
+                            DepartmentId = 3,
+                            Description = "",
+                            Name = "Introduction to Information Technology"
+                        });
                 });
 
             modelBuilder.Entity("Registration.Models.Department", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DepartmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DepartmentId");
 
                     b.ToTable("Department");
+
+                    b.HasData(
+                        new
+                        {
+                            DepartmentId = 1,
+                            Name = "Math",
+                            Prefix = "MATH"
+                        },
+                        new
+                        {
+                            DepartmentId = 2,
+                            Name = "English",
+                            Prefix = "ENGL"
+                        },
+                        new
+                        {
+                            DepartmentId = 3,
+                            Name = "Information Technology",
+                            Prefix = "ITEC"
+                        });
                 });
 
             modelBuilder.Entity("Registration.Models.Staff", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StaffId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -67,7 +127,7 @@ namespace Registration.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("StaffId");
 
                     b.HasIndex("DepartmentId");
 
@@ -82,7 +142,7 @@ namespace Registration.Migrations
 
                     b.HasOne("Registration.Models.Staff", "Professor")
                         .WithMany()
-                        .HasForeignKey("ProfessorId");
+                        .HasForeignKey("ProfessorStaffId");
 
                     b.Navigation("Department");
 

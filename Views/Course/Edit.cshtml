@@ -9,29 +9,36 @@
         <div class="card-body">
             <div class="card-title">Edit Course</div>
             <form asp-action="Edit">
-                <input type="hidden" asp-for="Course.Id" />
+                <input type="hidden" asp-for="Course.CourseId" />
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Course Number</span>
+                    </label>
+                    <input asp-for="Course.CourseNumber" class="input input-bordered" />
+                </div>
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Name</span>
                     </label>
-                    <input type="text" name="Name" placeholder="Name" class="input input-bordered" value="@Model.Course.Name"/>
+                    <input asp-for="Course.Name" class="input input-bordered" />
                 </div>
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Department</span>
                     </label>
-                    <select class="select select-bordered w-full max-w-xs">
-                        <option disabled="disabled" selected="selected">Select a department</option> 
-                        @foreach (var department in Model.Departments)
-                        {
-                                        <option value="@department.Id" selected="">@department.Name</option>
-                        }
+                    <select asp-for="Course.DepartmentId" asp-items="Model.Departments" class="select select-bordered w-full max-w-xs">
                     </select>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Description</span>
+                    </label>
+                    <textarea asp-for="Course.Description" class="textarea textarea-bordered"></textarea>
                 </div>
                 <div class="divider"></div>
                 <div class="flex">
                     <div class="flex-1">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Edit" class="btn btn-primary" />
                     </div>
 
                     <div class="flex-none">

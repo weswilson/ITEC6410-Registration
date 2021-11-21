@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Registration.Models;
 using Registration.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Registration.Controllers
 {
@@ -17,7 +18,7 @@ namespace Registration.Controllers
         // GET: Course
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Course.ToListAsync());
+            return View(await _context.Course.Include(course => course.Department).ToListAsync());
         }
 
         // GET: Course/Details/5
@@ -29,7 +30,7 @@ namespace Registration.Controllers
             }
 
             var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -43,7 +44,7 @@ namespace Registration.Controllers
         {
             var courseViewModel = new CourseViewModel()
             {
-                Departments = _context.Department.ToList()
+                Departments = DepartmentsToSelectListItems()
             };
 
             return View(courseViewModel);
@@ -52,17 +53,38 @@ namespace Registration.Controllers
         // POST: Course/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[Bind("CourseId,Name,Description,")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Course course)
+        public async Task<IActionResult> Create(Course course)
         {
+            if (course.DepartmentId != 0)
+            {
+                var department = _context.Department.Find(course.DepartmentId);
+                
+                if (department != null)
+                {
+                    course.Department = department;
+                    ModelState.ClearValidationState(nameof(course));
+                    TryValidateModel(course, nameof(course));
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(course);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+
+            var courseViewModel = new CourseViewModel()
+            {
+                Course = course,
+                Departments = DepartmentsToSelectListItems()
+            };
+            
+            return View(courseViewModel);
         }
 
         // GET: Course/Edit/5
@@ -86,7 +108,7 @@ namespace Registration.Controllers
             var courseViewModel = new CourseViewModel()
             {
                 Course = course,
-                Departments = _context.Department.ToList()
+                Departments = DepartmentsToSelectListItems()
             };
 
             return View(courseViewModel);
@@ -97,11 +119,23 @@ namespace Registration.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Course course)
+        public async Task<IActionResult> Edit(int id, Course course)
         {
-            if (id != course.Id)
+            if (id != course.CourseId)
             {
                 return NotFound();
+            }
+
+            if (course.DepartmentId != 0)
+            {
+                var department = _context.Department.Find(course.DepartmentId);
+
+                if (department != null)
+                {
+                    course.Department = department;
+                    ModelState.ClearValidationState(nameof(course));
+                    TryValidateModel(course, nameof(course));
+                }
             }
 
             if (ModelState.IsValid)
@@ -113,7 +147,7 @@ namespace Registration.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.Id))
+                    if (!CourseExists(course.CourseId))
                     {
                         return NotFound();
                     }
@@ -124,7 +158,14 @@ namespace Registration.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+
+            var courseViewModel = new CourseViewModel()
+            {
+                Course = course,
+                Departments = DepartmentsToSelectListItems()
+            };
+
+            return View(courseViewModel);
         }
 
         // GET: Course/Delete/5
@@ -136,7 +177,7 @@ namespace Registration.Controllers
             }
 
             var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -158,7 +199,14 @@ namespace Registration.Controllers
 
         private bool CourseExists(int id)
         {
-            return _context.Course.Any(e => e.Id == id);
+            return _context.Course.Any(e => e.CourseId == id);
+        }
+
+        private List<SelectListItem> DepartmentsToSelectListItems()
+        {
+            var departments = _context.Department.ToList();
+
+            return departments.Select(x => new SelectListItem(x.Name, x.DepartmentId.ToString())).ToList();
         }
     }
 }
