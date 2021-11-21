@@ -11,6 +11,7 @@ namespace Registration.Data
 
         public DbSet<Registration.Models.Course> Course { get; set; }
         public DbSet<Registration.Models.Department> Department { get; set; }
+        //public DbSet<Registration.Models.Schedule> Schedule { get; set; }
     }
 
 }

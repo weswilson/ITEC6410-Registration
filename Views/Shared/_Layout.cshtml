@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration - @ViewData["Title"]</title>
+    <title>University Registration System - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Registration.styles.css" asp-append-version="true" />
 </head>
@@ -12,15 +12,16 @@
         <div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
             <div class="flex-none px-2 mx-2">
                 <span class="text-lg font-bold">
-                        Registration
-                    </span>
+                  University Registration System Registration
+                </span>
             </div> 
             <div class="flex-1 px-2 mx-2">
                 <div class="items-stretch hidden lg:flex">
-                <a asp-controller="Course" asp-action="Index" class="btn btn-ghost btn-sm rounded-btn">
-                        Courses
-                        </a>
+                  <a asp-controller="Course" asp-action="Index" class="btn btn-ghost btn-sm rounded-btn">Courses</a>
                 </div>
+              <div class="items-stretch hidden lg:flex">
+               <a asp-controller="Schedule" asp-action="Schedule" class="btn btn-ghost btn-sm rounded-btn">Detailed Schedule</a>
+              </div>
             </div> 
         </div>
     </header>
