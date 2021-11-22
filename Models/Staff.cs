@@ -1,6 +1,6 @@
 namespace Registration.Models
 {
-    public class Staff
+    public class Staff : IRole
     {
         public int StaffId { get; set; }
         public string? Name { get; set; }

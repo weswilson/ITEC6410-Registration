@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Registration.Models.Course>
+
+@{
+    ViewData["Title"] = "Report";
+}
+
+
+<div class="grid rounded-box shadow-lg">
+    <div class="card">
+        <div class="card-body">
+            <div class="prose max-w-none mb-4">
+                <h2 class="card-title">Report</h2>
+            </div>
+            @foreach (var course in Model)
+            {
+                <div class="prose">
+                    <h3 class="mt-2">@course.FullCourseNumber() - @course.Name</h3>
+                </div>
+                <table class="table table-compact m-4 w-7/12">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in course.Students)
+                        {
+                            <tr class="hover">
+                                <td>
+                                    @student.Name
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

@@ -1,3 +1,6 @@
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
 @model IEnumerable<Registration.Models.Course>
 
 @{
@@ -5,19 +8,21 @@
 }
 
 <div class="grid grid-cols-3 rounded-box shadow-lg">
-    <div class="card col-span-2">
+    <div class="card col-span-3">
         <div class="card-body">
-            <div class="card-title">Courses</div>
-            <table class="table w-full table-compact table-zebra">
+            <div class="prose max-w-none mb-4">
+                <h2 class="card-title">Courses</h2>
+            </div>
+            <table class="table table-compact">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="pr-16">
                             Course Number
                         </th>
-                        <th>
+                        <th class="w-full">
                             Name
                         </th>
-                        <th></th>
+                        <th class="pr-8"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,20 +33,44 @@
                                 <a class="link" asp-action="Details" asp-route-id="@item.CourseId">@item.FullCourseNumber()</a>
                             </td>
                             <td>
-                                @item.Name
+                                <a class="link" asp-action="Details" asp-route-id="@item.CourseId">@item.Name</a>
                             </td>
-                            <td class="text-right">
-                                <a class="btn btn-sm" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
-                                <a class="btn btn-sm" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
-                            </td>
+                            
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Staff")).Succeeded)
+                            {
+                                <td>
+                                    <a class="btn btn-xs" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
+                                    <a class="btn btn-xs" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
+                                </td>
+                            }
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "Student")).Succeeded)
+                            {
+                                <td>
+                                    <a class="btn btn-xs" asp-action="Add" asp-controller="Schedule" asp-route-id="@item.CourseId">Add</a>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Course Number
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
-            <div class="divider"></div>
-            <div class="justify-end">
-                <a class="btn btn-primary" asp-action="Create">Add Course</a>
-            </div>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "Staff")).Succeeded)
+            {
+                <div class="divider"></div>
+                    <div class="justify-end">
+                        <a class="btn btn-primary" asp-action="Create">Add Course</a>
+                </div>
+            }
         </div>
     </div>
 </div>

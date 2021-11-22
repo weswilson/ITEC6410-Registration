@@ -7,7 +7,9 @@
 <div class="grid grid-cols-2 rounded-box shadow-lg">
     <div class="card">
         <div class="card-body">
-            <div class="card-title">Edit Course</div>
+            <div class="prose max-w-none mb-4">
+                <h2 class="card-title">Edit Course</h2>
+            </div>
             <form asp-action="Edit">
                 <input type="hidden" asp-for="Course.CourseId" />
                 <div class="form-control">

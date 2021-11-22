@@ -4,7 +4,6 @@ namespace Registration.Models
     {
         public int DepartmentId { get; set; }
         public string Name { get; set; }
-
         public string Prefix { get; set; }
     }
 }

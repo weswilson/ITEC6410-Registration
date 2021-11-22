@@ -1,0 +1,55 @@
+﻿@model Registration.Models.Student
+
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+<div class="grid grid-cols-3 rounded-box shadow-lg">
+    <div class="card col-span-3">
+        <div class="card-body">
+            <div class="prose max-w-none mb-4">
+                <h2 class="card-title">Schedule</h2>
+            </div>
+            <table class="table table-compact">
+                <thead>
+                    <tr>
+                        <th class="pr-16">
+                            Course Number
+                        </th>
+                        <th class="w-full">
+                            Name
+                        </th>
+                        <th class="pr-8"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model.Courses)
+                    {
+                        <tr class="hover">
+                            <td>
+                                @course.FullCourseNumber()
+                            </td>
+                            <td>
+                                @course.Name
+                            </td>
+                            <td>
+                                <a class="btn btn-xs" asp-action="Drop" asp-controller="Schedule" asp-route-id="@course.CourseId">Drop</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Course Number
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

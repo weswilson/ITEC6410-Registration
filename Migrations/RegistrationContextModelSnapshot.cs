@@ -17,6 +17,21 @@ namespace Registration.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<int>("CoursesCourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StudentsStudentId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CoursesCourseId", "StudentsStudentId");
+
+                    b.HasIndex("StudentsStudentId");
+
+                    b.ToTable("CourseStudent");
+                });
+
             modelBuilder.Entity("Registration.Models.Course", b =>
                 {
                     b.Property<int>("CourseId")
@@ -38,14 +53,9 @@ namespace Registration.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProfessorStaffId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("CourseId");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("ProfessorStaffId");
 
                     b.ToTable("Course");
 
@@ -53,26 +63,122 @@ namespace Registration.Migrations
                         new
                         {
                             CourseId = 1,
-                            CourseNumber = "1000",
+                            CourseNumber = "1251",
                             DepartmentId = 1,
-                            Description = "",
-                            Name = "Math Fundamentals"
+                            Description = "This is the first course in a three-course sequence designed primarily to provide mathematics and science majors with necessary mathematical understanding and skills. Topics include limits, continuity, differentiation of algebraic and trigonometric functions, applications of the derivative, definite and indefinite integrals, the Fundamental Theorem of Calculus, and applications of the integral.",
+                            Name = "Calculus I"
                         },
                         new
                         {
                             CourseId = 2,
-                            CourseNumber = "1000",
-                            DepartmentId = 2,
-                            Description = "",
-                            Name = "Introduction to English"
+                            CourseNumber = "2252",
+                            DepartmentId = 1,
+                            Description = "This is the second course in a three-course sequence designed primarily to provide mathematics and natural science majors with necessary mathematical understanding and skills. Topics include differentiation of logarithmic, exponential, and inverse trigonometric functions, techniques of integration, L'Hopital's rule, improper integrals, numerical methods, infinite series, and polar coordinates.",
+                            Name = "Calculus II"
                         },
                         new
                         {
                             CourseId = 3,
-                            CourseNumber = "1000",
+                            CourseNumber = "2253",
+                            DepartmentId = 1,
+                            Description = "This is the third course in a three-course sequence designed primarily to provide mathematics and natural science majors with necessary mathematical understanding and skills. Topics include vector spaces and analytic geometry in two and three-space, calculus of vector-valued functions, calculus of functions of several variables, and vector analysis.",
+                            Name = "Calculus III"
+                        },
+                        new
+                        {
+                            CourseId = 4,
+                            CourseNumber = "2260",
+                            DepartmentId = 1,
+                            Description = "This is a matrix-oriented introduction to linear algebra through the study of systems of linear equations, determinants, Euclidean vector spaces, linear transformations, eigenvalues and eigenvectors, and related topics.",
+                            Name = "Introduction to Linear Algebra"
+                        },
+                        new
+                        {
+                            CourseId = 5,
+                            CourseNumber = "2120",
+                            DepartmentId = 1,
+                            Description = "This course is an introduction to discrete mathematics. Selected topics may include sets, logic, proofs, counting, number theory, graph theory, trees, or algorithms.",
+                            Name = "Discrete Mathematics"
+                        },
+                        new
+                        {
+                            CourseId = 6,
+                            CourseNumber = "2270",
+                            DepartmentId = 1,
+                            Description = "A study of ordinary differential equations with emphasis on linear differential equations. Topics include numerical methods, applications, systems of equations, and Laplace transformations. It is highly recommended that students take MATH 2253 and MATH 2260 prior to this course.",
+                            Name = "Differential Equations"
+                        },
+                        new
+                        {
+                            CourseId = 7,
+                            CourseNumber = "1101",
+                            DepartmentId = 2,
+                            Description = "This is a composition course focusing on skills required for effective writing in a variety of contexts, with emphasis on exposition, analysis, and argumentation, and also including introductory use of a variety of research skills. Satisfactory placement test score or successful completion of Learning Support English and Reading are required prior to admission to this course.",
+                            Name = "English Composition I"
+                        },
+                        new
+                        {
+                            CourseId = 8,
+                            CourseNumber = "1102",
+                            DepartmentId = 2,
+                            Description = "This is a composition course that develops writing skills beyond the level of proficiency required by ENGL 1101, that emphasizes interpretation and evaluation based on an introduction to fiction, drama, and poetry, and that incorporates a variety of more advanced research methods. An oral communication component may also be required.",
+                            Name = "English Composition II"
+                        },
+                        new
+                        {
+                            CourseId = 9,
+                            CourseNumber = "2111",
+                            DepartmentId = 2,
+                            Description = "This is a survey of important works of world literature from the beginning through the 17th century.",
+                            Name = "World Literature I"
+                        },
+                        new
+                        {
+                            CourseId = 10,
+                            CourseNumber = "2112",
+                            DepartmentId = 2,
+                            Description = "This is a survey of important works of world literature from the mid--seventeenth century to the present.",
+                            Name = "World Literature II"
+                        },
+                        new
+                        {
+                            CourseId = 11,
+                            CourseNumber = "2215",
                             DepartmentId = 3,
-                            Description = "",
+                            Description = "This course uses short projects to introduce the student to the major information technologies of hardware, systems software, networking, web development, software and applications development, systems analysis, digital media, and database. Security and ethical issues as they affect the use of technologies are also discussed.",
                             Name = "Introduction to Information Technology"
+                        },
+                        new
+                        {
+                            CourseId = 12,
+                            CourseNumber = "2260",
+                            DepartmentId = 3,
+                            Description = "This course is an introduction to computer programming, logic, design and implementation. Topics include software design, documentation, coding methods, data types, data structures, functions, subroutines and program control structures.",
+                            Name = "Introduction to Computer Programming"
+                        },
+                        new
+                        {
+                            CourseId = 13,
+                            CourseNumber = "2270",
+                            DepartmentId = 3,
+                            Description = "This course is an introduction to computer programming, logic, design and implementation. Topics include software design, documentation, coding methods, data types, data structures, functions, subroutines and program control structures.",
+                            Name = "Application Development"
+                        },
+                        new
+                        {
+                            CourseId = 14,
+                            CourseNumber = "2320",
+                            DepartmentId = 3,
+                            Description = "This course covers the architecture, function, and configuration of computer hardware and networks, along with basic operating system software function. The students are introduced to network and communications concepts including operational issues surrounding network planning, configuration, monitoring, trouble shooting, and management.",
+                            Name = "Network Essentials"
+                        },
+                        new
+                        {
+                            CourseId = 15,
+                            CourseNumber = "2380",
+                            DepartmentId = 3,
+                            Description = "This course introduces concepts and practices associated with Web site development. Focus is on site and page design, page layout techniques, styling methods, coding practices, selection of typography, graphics, and multimedia, accessibility issues, site publishing, testing and maintenance, and site marketing.",
+                            Name = "Web Development"
                         });
                 });
 
@@ -132,6 +238,61 @@ namespace Registration.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Staff");
+
+                    b.HasData(
+                        new
+                        {
+                            StaffId = 1,
+                            DepartmentId = 3,
+                            Name = "Alice"
+                        },
+                        new
+                        {
+                            StaffId = 2,
+                            DepartmentId = 2,
+                            Name = "Bob"
+                        });
+                });
+
+            modelBuilder.Entity("Registration.Models.Student", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("StudentId");
+
+                    b.ToTable("Student");
+
+                    b.HasData(
+                        new
+                        {
+                            StudentId = 1,
+                            Name = "Eve"
+                        },
+                        new
+                        {
+                            StudentId = 2,
+                            Name = "Frank"
+                        });
+                });
+
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.HasOne("Registration.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Registration.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Registration.Models.Course", b =>
@@ -140,13 +301,7 @@ namespace Registration.Migrations
                         .WithMany()
                         .HasForeignKey("DepartmentId");
 
-                    b.HasOne("Registration.Models.Staff", "Professor")
-                        .WithMany()
-                        .HasForeignKey("ProfessorStaffId");
-
                     b.Navigation("Department");
-
-                    b.Navigation("Professor");
                 });
 
             modelBuilder.Entity("Registration.Models.Staff", b =>

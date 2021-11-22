@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Registration.Models;
 using Registration.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Registration.Controllers
 {
@@ -16,68 +17,73 @@ namespace Registration.Controllers
         }
 
         /// Update to following below
-        public IActionResult Schedule()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var roleId = Int32.Parse(User.FindFirst("RoleId").Value);
+
+            var student = await _context.Student
+                .Include(s => s.Courses)
+                .ThenInclude(c => c.Department)
+                .FirstOrDefaultAsync(s => s.StudentId == roleId);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            student.Courses = student.Courses.OrderBy(c => c.FullCourseNumber()).ToList();
+
+            return View(student);
         }
 
-        //// GET: Schedule
-        //public async Task<IActionResult> Schedule()
-        //{
-        //    return View(await _context.Schedule.ToListAsync());
-        //}
+        [Authorize(Policy = "Student")]
+        public async Task<IActionResult> Add(int? id)
+        {
+            var roleId = Int32.Parse(User.FindFirst("RoleId").Value);
 
-        //// GET: Schedule/Details
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var student = await _context.Student
+                .Include(s => s.Courses)
+                .FirstOrDefaultAsync(s => s.StudentId == roleId);
 
-        //    var schedule = await _context.Schedule
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (schedule == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (student == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(schedule);
-        //}
+            if (!student.Courses.Any(c => c.CourseId == id))
+            {
+                var course = _context.Course.Find(id);
+                student.Courses.Add(course);
+            }
 
-        //// GET: Course/Drop
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            await _context.SaveChangesAsync();
 
-        //    var schedule = await _context.Schedule
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (schedule == null)
-        //    {
-        //        return NotFound();
-        //    }
+            return RedirectToAction("Index", "Schedule");
+        }
 
-        //    return View(schedule);
-        //}
+        [Authorize(Policy = "Student")]
+        public async Task<IActionResult> Drop(int? id)
+        {
+            var roleId = Int32.Parse(User.FindFirst("RoleId").Value);
 
-        //// POST: Course/Drop
-        //[HttpPost, ActionName("Drop")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var schedule = await _context.Schedule.FindAsync(id);
-        //    _context.Schedule.Remove(schedule);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            var student = await _context.Student
+                .Include(s => s.Courses)
+                .FirstOrDefaultAsync(s => s.StudentId == roleId);
 
-        //private bool SceduleExists(int id)
-        //{
-        //    return _context.Schedule.Any(e => e.Id == id);
-        //}
+            if (student == null)
+            {
+                return NotFound();
+            }
 
+            if (student.Courses.Any(c => c.CourseId == id))
+            {
+                var course = _context.Course.Find(id);
+                student.Courses.Remove(course);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Schedule");
+        }
     }
 }

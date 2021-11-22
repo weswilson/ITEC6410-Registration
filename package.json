@@ -8,5 +8,8 @@
   },
   "scripts": {
     "css:build": "npx tailwind -i ./wwwroot/css/styles.css -o ./wwwroot/css/output.css"
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.4.1"
   }
 }
