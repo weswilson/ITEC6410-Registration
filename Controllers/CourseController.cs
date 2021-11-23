@@ -73,6 +73,7 @@ namespace Registration.Controllers
                 if (department != null)
                 {
                     course.Department = department;
+                    course.Students = new List<Student>();
                     ModelState.ClearValidationState(nameof(course));
                     TryValidateModel(course, nameof(course));
                 }
@@ -136,6 +137,18 @@ namespace Registration.Controllers
                 return NotFound();
             }
 
+            var currentCourse = await _context.Course.FindAsync(id);
+
+            if (currentCourse == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Entry(currentCourse).Collection(c => c.Students).Load();
+                course.Students = currentCourse.Students;
+            }
+
             if (course.DepartmentId != 0)
             {
                 var department = _context.Department.Find(course.DepartmentId);
@@ -152,7 +165,7 @@ namespace Registration.Controllers
             {
                 try
                 {
-                    _context.Update(course);
+                    _context.Entry(currentCourse).CurrentValues.SetValues(course);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
